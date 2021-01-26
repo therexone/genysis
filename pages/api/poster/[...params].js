@@ -5,6 +5,9 @@ export default async function handler(req, res) {
   try {
     const [id, md5WithExtension] = req.query.params;
     const resp = await fetch(`${posterUrl}${id}/${md5WithExtension}`);
+    if (!resp.ok) {
+      return res.status(404).send();
+    }
     const blob = await resp.blob();
     res.type = blob.type;
     return blob.arrayBuffer().then((buf) => {

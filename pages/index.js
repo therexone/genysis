@@ -11,7 +11,7 @@ export default function IndexPage() {
     setLoading(true);
     setResults([]);
     e.preventDefault();
-    window.localStorage.setItem("query", JSON.stringify(query));
+    window.sessionStorage.setItem("query", JSON.stringify(query));
     const res = await fetch(`/api/search/${query}`);
     const data = await res.json();
     setResults(data.books);
@@ -20,14 +20,14 @@ export default function IndexPage() {
 
   useEffect(() => {
     if (results.length > 0) {
-      window.localStorage.setItem("results", JSON.stringify(results));
+      window.sessionStorage.setItem("results", JSON.stringify(results));
     }
     console.log(results);
   }, [results]);
 
   useEffect(() => {
-    const results = window.localStorage.getItem("results");
-    const query = window.localStorage.getItem("query");
+    const results = window.sessionStorage.getItem("results");
+    const query = window.sessionStorage.getItem("query");
     if (results) {
       setResults(JSON.parse(results));
     }
