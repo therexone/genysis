@@ -22,7 +22,6 @@ export default function IndexPage() {
     if (results.length > 0) {
       window.sessionStorage.setItem("results", JSON.stringify(results));
     }
-    console.log(results);
   }, [results]);
 
   useEffect(() => {

@@ -16,8 +16,6 @@ export default function ResultCard({
     setSrc("/placeholder-book.jpg");
   };
 
-  console.log(download);
-
   return (
     <div className="mb-4 w-full max-w-lg max-h-56 overflow-hidden shadow-lg flex border border-black">
       <div className="w-1/3">
