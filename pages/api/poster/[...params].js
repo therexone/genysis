@@ -1,5 +1,3 @@
-//
-
 export default async function handler(req, res) {
   const posterUrl = "http://library.lol/covers/";
   try {
@@ -8,11 +6,12 @@ export default async function handler(req, res) {
     if (!resp.ok) {
       return res.status(404).send("Not found");
     }
+
     const blob = await resp.blob();
     res.type = "image/jpeg";
-    return blob.arrayBuffer().then((buf) => {
-      res.send(Buffer.from(buf));
-    });
+
+    const buffer = await blob.arrayBuffer();
+    return res.send(Buffer.from(buffer));
   } catch (error) {
     console.error(error);
     return res.status(500).send("Internal Server Error");

@@ -3,7 +3,7 @@ import ResultCard from "../components/result-card";
 import Button from "../components/button";
 import { useState, useEffect } from "react";
 
-export default function IndexPage() {
+export default function Home() {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
