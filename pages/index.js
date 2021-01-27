@@ -19,7 +19,7 @@ export default function Home() {
   };
 
   useEffect(() => {
-    if (results.length > 0) {
+    if (results?.length > 0) {
       window.sessionStorage.setItem("results", JSON.stringify(results));
     }
   }, [results]);
