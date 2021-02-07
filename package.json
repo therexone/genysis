@@ -7,11 +7,12 @@
     "start": "next start"
   },
   "dependencies": {
+    "axios": "^0.21.1",
     "next": "latest",
+    "next-transpile-modules": "^6.2.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "request": "^2.88.2",
-    "request-promise": "^4.2.6"
+    "react-reader": "^0.20.3"
   },
   "devDependencies": {
     "autoprefixer": "10.0.2",
