@@ -1,5 +1,6 @@
 import Button from "./button";
 import { useState } from "react";
+import Link from "next/link";
 
 export default function ResultCard({
   title,
@@ -38,9 +39,21 @@ export default function ResultCard({
         <p className="text-xs font-light text-gray-600">{language}</p>
         <p className="text-xs font-light text-gray-600">{filesize}</p>
 
-        <a href={download}>
-          <Button title="Download Book" small />
-        </a>
+        <div className="flex items-center">
+          <a href={download}>
+            <Button title="Download" small />
+          </a>
+          {extension == "epub" && (
+            <Link
+              href={{
+                pathname: `reader/${btoa(download)}.epub`,
+                query: { title },
+              }}
+            >
+              <a className="text-xs ml-3 mt-4">Read</a>
+            </Link>
+          )}
+        </div>
       </div>
     </div>
   );
