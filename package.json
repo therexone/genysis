@@ -9,7 +9,7 @@
   "dependencies": {
     "axios": "^0.21.1",
     "next": "latest",
-    "next-transpile-modules": "^6.2.0",
+    "next-pwa": "^5.0.5",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-reader": "^0.20.3"
