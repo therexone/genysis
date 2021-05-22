@@ -94,7 +94,7 @@ export default function Home() {
               checked={showKindleResults}
               onChange={() => setShowKindleResults(!showKindleResults)}
             />
-            {/* {showKindleResults && <EmailInput />} */}
+            {showKindleResults && <EmailInput />}
 
             <Checkbox
               label="Enable reading in browser (Experimental- epub only)"

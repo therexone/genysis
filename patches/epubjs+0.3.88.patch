@@ -1,0 +1,12 @@
+diff --git a/node_modules/epubjs/libs/mime/mime.js b/node_modules/epubjs/libs/mime/mime.js
+index 8f4cca3..63a66dd 100755
+--- a/node_modules/epubjs/libs/mime/mime.js
++++ b/node_modules/epubjs/libs/mime/mime.js
+@@ -166,4 +166,5 @@ function lookup(filename) {
+ 	return filename && mimeTypes[filename.split(".").pop().toLowerCase()] || defaultValue;
+ };
+ 
+-export default { lookup };
++// export default { lookup };
++module.exports = lookup;
+\ No newline at end of file

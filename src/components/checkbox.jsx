@@ -6,7 +6,7 @@ const Checkbox = ({ label, checked, onChange }) => {
           type="checkbox"
           value="yes"
           class="opacity-0 absolute h-4 w-4"
-          name={label}
+          id={label}
           checked={checked}
           onChange={onChange}
         />
