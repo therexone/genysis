@@ -1,12 +1,20 @@
 import Head from "next/head";
-import ResultCard from "../components/result-card";
-import Button from "../components/button";
+import Button from "../src/components/button";
 import { useState, useEffect } from "react";
+import Checkbox from "../src/components/checkbox";
+import EmailInput from "../src/components/emailInput";
+import ResultCardList from "../src/components/resultCardList";
+import useLocalStorageState from "../src/hooks/useLocalStorageState";
 
 export default function Home() {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
+
+  const [showOptions, setShowOptions] = useState(false);
+  const [showKindleResults, setShowKindleResults] = useLocalStorageState('showKindleResults', false);
+  const [enableReadingMode, setEnableReadingMode] = useLocalStorageState('enableReadingMode', false);
+
   const handleBookSearch = async (e) => {
     setLoading(true);
     setResults([]);
@@ -45,12 +53,12 @@ export default function Home() {
         />
       </Head>
       <div
-        className={`pt-10 mb-10 px-10 flex flex-col items-center ${
+        className={`pt-10 mb-8 px-10 flex flex-col items-center dark:text-gray-50 ${
           results?.length === 0 && "home"
         }`}
       >
-        <h1 className="text-4xl text-center">Genysis</h1>
-        <p className="text-gray-600 text-sm text-center mt-1 font-light">
+        <h1 className="text-4xl text-center dark:text-gray-50">Genysis</h1>
+        <p className="text-gray-600 text-sm text-center mt-1 font-light dark:text-gray-200">
           Library Genesis Simplified
         </p>
         <form
@@ -59,7 +67,7 @@ export default function Home() {
         >
           <input
             type="text"
-            className="mt-10 w-full text-center p-2 border border-black"
+            className="mt-10 w-full text-center p-2 border border-black max-w-md  dark:bg-gray-900 dark:border-gray-500"
             placeholder="Book title"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
@@ -67,6 +75,35 @@ export default function Home() {
 
           <Button type="submit" title="Search Book" />
         </form>
+
+        <div className="flex flex-col w-full mt-4 ">
+          <div
+            className="border border-black  w-full px-6 py-2 text-xs flex justify-between dark:border-gray-500"
+            onClick={() => setShowOptions(!showOptions)}
+          >
+            <span>Options</span>
+            <span>&#x25BC;</span>
+          </div>
+          <div
+            className={`px-6  pb-4 pt-3 bg-white dark:bg-gray-800 transition-all ease-in duration-200	border border-black  ${
+              showOptions ? "block" : "hidden"
+            }`}
+          >
+            <Checkbox
+              label="Kindle only"
+              checked={showKindleResults}
+              onChange={() => setShowKindleResults(!showKindleResults)}
+            />
+            {/* {showKindleResults && <EmailInput />} */}
+
+            <Checkbox
+              label="Enable reading in browser (Experimental- epub only)"
+              checked={enableReadingMode}
+              onChange={() => setEnableReadingMode(!enableReadingMode)}
+            />
+          </div>
+        </div>
+
         {loading && (
           <div>
             <div className="spinner"></div>
@@ -74,13 +111,11 @@ export default function Home() {
           </div>
         )}
       </div>
-      <div className="flex-col px-4">
-        {results && results !== null ? (
-          results.map((result) => <ResultCard {...result} key={result.id} />)
-        ) : (
-          <p className="text-center">No books found.</p>
-        )}
-      </div>
+      <ResultCardList
+        results={results}
+        enableReadingMode={enableReadingMode}
+        showKindleOnlyResults={showKindleResults}
+      />
     </>
   );
 }

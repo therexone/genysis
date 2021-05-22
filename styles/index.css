@@ -70,3 +70,7 @@ button:focus {
     opacity: 0;
   }
 }
+
+input:checked + div svg {
+  @apply block;
+}
