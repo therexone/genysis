@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "scripts": {
     "dev": "next",
-    "build": "next build",
-    "start": "next start"
+    "build": "patch-package next build",
+    "start": "next start",
+    "postinstall": "patch-package"
   },
   "dependencies": {
     "axios": "^0.21.1",
