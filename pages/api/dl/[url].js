@@ -6,24 +6,21 @@ export default async function handler(req, res) {
     const base64Url = req.query.url.slice(0, -5);
     const url = Buffer.from(base64Url, "base64").toString("utf-8");
 
-    const isAReadRequest = req.query.readmode;
-
     // console.log(url);
 
     const response = await axios({
       method: "get",
       url: url,
-      responseType: isAReadRequest ? "stream" : "",
+      responseType:  "stream",
     });
 
     const headerLine = response.headers["content-disposition"];
 
     res.writeHead(200, { "Content-Disposition": headerLine });
 
-    if (isAReadRequest) {
-      return response.data.pipe(res);
-    }
-    res.end(response.data);
+
+    response.data.pipe(res);
+
   } catch (error) {
     console.error(error);
     return res.redirect(307, url);
