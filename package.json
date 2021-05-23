@@ -20,7 +20,7 @@
   "devDependencies": {
     "autoprefixer": "10.0.2",
     "patch-package": "^6.4.7",
-    "postcss": "8.1.7",
+    "postcss": "8.2.10",
     "tailwindcss": "^2.0.2"
   },
   "license": "MIT"
