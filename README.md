@@ -3,4 +3,4 @@ A PWA based on Library Genesis, with clean interface, direct download, inbuilt *
 
 **⚠ This project was meant to be a playground for testing out PWA™| Serviceworkers™ | Workbox™ | Indexdb™ and in no way is meant to be a fully functional *usable* app.**
 
-![image](https://user-images.githubusercontent.com/27387245/119275592-9723ec80-bc33-11eb-80ce-c34a597cb685.png)
+![image](https://user-images.githubusercontent.com/27387245/119275880-3ac1cc80-bc35-11eb-9a8f-52140efe02f3.png)
