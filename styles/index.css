@@ -39,7 +39,7 @@ button:focus {
 /* Your own custom utilities */
 
 .spinner {
-  margin: 20px auto;
+  margin: auto;
   background-color: #333;
 
   border-radius: 100%;

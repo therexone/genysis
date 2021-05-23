@@ -39,6 +39,7 @@ export default function ResultCard({
       return;
     }
     setMailStatus({ sending: true });
+
     toast()
       .default("Sending e-book to", email)
       .with({
@@ -49,14 +50,10 @@ export default function ResultCard({
       })
       .for(1000)
       .show();
-    // const response = await fetch(
-    //   `/api/send-mail/${btoa(download)}.epub?mail=${email}`
-    // );
-    let response;
 
-    setTimeout(() => {
-      response.ok = true;
-    }, 2000);
+    const response = await fetch(
+      `/api/send-mail/${btoa(download)}.epub?mail=${email}`
+    );
 
     if (!response.ok) {
       toast()
@@ -71,6 +68,7 @@ export default function ResultCard({
       setMailStatus({ sending: false });
       return;
     }
+    
     toast()
       .default(response.statusText, "Mail sent")
       .with({
