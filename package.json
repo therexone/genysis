@@ -8,12 +8,14 @@
     "postinstall": "patch-package"
   },
   "dependencies": {
+    "@sendgrid/mail": "^7.4.4",
     "axios": "^0.21.1",
     "next": "10.0.5",
     "next-pwa": "^5.0.5",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-reader": "^0.20.3"
+    "react-reader": "^0.20.3",
+    "tailwind-toast": "^1.0.9"
   },
   "devDependencies": {
     "autoprefixer": "10.0.2",

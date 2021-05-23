@@ -11,7 +11,7 @@ const Reader = () => {
   return (
     <div style={{ position: "relative", height: "100vh" }}>
       <ReactReader
-        url={`/api/dl/${dlUrl}`}
+        url={`/api/dl/${dlUrl}?readmode=true`}
         title={title}
         location={location}
         locationChanged={(epubcifi) => setLocation(epubcifi)}

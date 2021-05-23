@@ -39,8 +39,6 @@ button:focus {
 /* Your own custom utilities */
 
 .spinner {
-  width: 40px;
-  height: 40px;
   margin: 20px auto;
   background-color: #333;
 
@@ -73,4 +71,12 @@ button:focus {
 
 input:checked + div svg {
   @apply block;
+}
+
+.twthis {
+  border: 1px solid black;
+  padding: 1.6rem;
+  border-radius: 0;
+  background-color: white;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
 }

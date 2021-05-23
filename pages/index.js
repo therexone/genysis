@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Checkbox from "../src/components/checkbox";
 import EmailInput from "../src/components/emailInput";
 import ResultCardList from "../src/components/resultCardList";
+import Loader from "../src/components/loader";
 import useLocalStorageState from "../src/hooks/useLocalStorageState";
 
 export default function Home() {
@@ -12,8 +13,16 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
 
   const [showOptions, setShowOptions] = useState(false);
-  const [showKindleResults, setShowKindleResults] = useLocalStorageState('showKindleResults', false);
-  const [enableReadingMode, setEnableReadingMode] = useLocalStorageState('enableReadingMode', false);
+  const [showKindleResults, setShowKindleResults] = useLocalStorageState(
+    "showKindleResults",
+    false
+  );
+  const [enableReadingMode, setEnableReadingMode] = useLocalStorageState(
+    "enableReadingMode",
+    false
+  );
+
+  const [email, setEmail] = useLocalStorageState("email", "");
 
   const handleBookSearch = async (e) => {
     setLoading(true);
@@ -76,7 +85,7 @@ export default function Home() {
           <Button type="submit" title="Search Book" />
         </form>
 
-        <div className="flex flex-col w-full mt-4 ">
+        <div className="flex flex-col w-full mt-4 max-w-md ">
           <div
             className="border border-black  w-full px-6 py-2 text-xs flex justify-between dark:border-gray-500"
             onClick={() => setShowOptions(!showOptions)}
@@ -94,7 +103,12 @@ export default function Home() {
               checked={showKindleResults}
               onChange={() => setShowKindleResults(!showKindleResults)}
             />
-            {showKindleResults && <EmailInput />}
+            {showKindleResults && (
+              <EmailInput
+                email={email}
+                onEmailChange={(e) => setEmail(e.target.value)}
+              />
+            )}
 
             <Checkbox
               label="Enable reading in browser (Experimental- epub only)"
@@ -104,17 +118,13 @@ export default function Home() {
           </div>
         </div>
 
-        {loading && (
-          <div>
-            <div className="spinner"></div>
-            <p className="text-xs text-gray-400">Searching...</p>
-          </div>
-        )}
+        {loading && <Loader tailwindcss="h-8 w-8" loadingText="Searching..." />}
       </div>
       <ResultCardList
         results={results}
         enableReadingMode={enableReadingMode}
         showKindleOnlyResults={showKindleResults}
+        email={email}
       />
     </>
   );

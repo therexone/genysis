@@ -5,17 +5,21 @@ const ResultCardList = ({
   results,
   enableReadingMode,
   showKindleOnlyResults,
+  email,
 }) => {
   const finalResults = showKindleOnlyResults
-    ? results?.filter((result) => result.extension === "mobi")
+    ? results?.filter(
+        (result) => result.extension === "mobi" || result.extension === "epub"
+      )
     : results;
 
   return (
-    <div className="grid lg:gap-4 grid-cols-1 md:grid-cols-2 xl:grid-cols-3 px-4 mx-auto justify-items-center max-w-6xl">
+    <div className="grid md:gap-4 grid-cols-1 md:grid-cols-2 xl:grid-cols-3 px-4 mx-auto justify-items-center max-w-6xl">
       {finalResults && finalResults !== null ? (
         finalResults.map((result) => (
           <ResultCard
             {...result}
+            email={email}
             key={result.id}
             enableReadingMode={enableReadingMode}
             showKindleOnlyResults={showKindleOnlyResults}
