@@ -80,3 +80,13 @@ input:checked + div svg {
   background-color: white;
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
 }
+
+div[id^="tawilwind-toast-"] {
+  /* z-50 fixed ease-in-out transform duration-500 -bottom-24 flex justify-center w-full -translate-y-36 */
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  transition: all 500 ease-in-out;
+  transform: translateY(-36px);
+  bottom: -10px;
+}
