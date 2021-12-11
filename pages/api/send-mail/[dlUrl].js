@@ -14,6 +14,11 @@ export default async function handler(req, res) {
     });
 
     const headerLine = response.headers["content-disposition"];
+    console.log(
+      "%c[dlUrl].js line:17 headerline",
+      "color: #007acc;",
+      headerLine
+    );
     const startFileNameIndex = headerLine.indexOf('"') + 1;
     const endFileNameIndex = headerLine.lastIndexOf('"');
     const filename = headerLine.substring(startFileNameIndex, endFileNameIndex);
@@ -32,7 +37,7 @@ export default async function handler(req, res) {
         {
           content: response.data,
           filename: filename,
-          disposition: "attachment",
+          disposition: headerLine,
         },
       ],
     };

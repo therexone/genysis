@@ -1,28 +1,15 @@
-const axios = require("axios");
-const fs = require("fs");
-
 export default async function handler(req, res) {
+  const base64Url = req.query.url.slice(0, -5);
+  const url = Buffer.from(base64Url, "base64").toString("utf-8");
+
   try {
-    const base64Url = req.query.url.slice(0, -5);
-    const url = Buffer.from(base64Url, "base64").toString("utf-8");
-
-    // console.log(url);
-
-    const response = await axios({
-      method: "get",
-      url: url,
-      responseType:  "stream",
+    await fetch(url).then((actual) => {
+      actual.headers.forEach((v, n) => res.setHeader(n, v));
+      actual.body.pipe(res);
     });
-
-    const headerLine = response.headers["content-disposition"];
-
-    res.writeHead(200, { "Content-Disposition": headerLine });
-
-
-    response.data.pipe(res);
-
   } catch (error) {
-    console.error(error);
+    console.error(error.response?.message ?? error.message);
+
     return res.redirect(307, url);
   }
 }
