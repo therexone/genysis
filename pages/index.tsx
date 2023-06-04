@@ -97,7 +97,7 @@ export default function Home() {
             }`}
           >
             <Checkbox
-              label="Kindle only"
+              label="Kindle only (Kindle supported formats)"
               checked={showKindleResults}
               onChange={() => setShowKindleResults(!showKindleResults)}
             />
@@ -108,11 +108,6 @@ export default function Home() {
               />
             )}
 
-            <Checkbox
-              label="Enable reading in browser (Experimental- epub only)"
-              checked={enableReadingMode}
-              onChange={() => setEnableReadingMode(!enableReadingMode)}
-            />
           </div>
         </div>
 
