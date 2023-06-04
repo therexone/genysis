@@ -1,61 +1,34 @@
-import Button from "@/src/components/button";
-import Checkbox from "@/src/components/checkbox";
-import EmailInput from "@/src/components/emailInput";
+import { Options } from "@/src/components/Options";
+import { SearchForm } from "@/src/components/SearchForm";
 import Loader from "@/src/components/loader";
 import ResultCardList from "@/src/components/resultCardList";
 import useLocalStorageState from "@/src/hooks/useLocalStorageState";
-import { useState, useEffect, FormEvent } from "react";
+import { useEffect, useState } from "react";
 
 export default function Home() {
-  const [query, setQuery] = useState("");
-  const [results, setResults] = useState([]);
+  const [results, setResults] = useState<Record<string, any>[]>([]);
   const [loading, setLoading] = useState(false);
 
-  const [showOptions, setShowOptions] = useState(false);
   const [showKindleResults, setShowKindleResults] = useLocalStorageState(
     "showKindleResults",
     false
   );
-  const [enableReadingMode, setEnableReadingMode] = useLocalStorageState(
-    "enableReadingMode",
-    false
-  );
-
   const [email, setEmail] = useLocalStorageState("email", "");
 
-  const handleBookSearch = async (e: FormEvent<HTMLFormElement>) => {
+  const handleBookSearch = async (query: string) => {
     setLoading(true);
     setResults([]);
-    e.preventDefault();
     try {
-        window.sessionStorage.setItem("query", JSON.stringify(query));
-        const res = await fetch(`/api/search/${query}`);
-        const data = await res.json();
-        console.log(data);
-        setResults(data.books);
+      window.sessionStorage.setItem("query", JSON.stringify(query));
+      const res = await fetch(`/api/search/${query}`);
+      const data = await res.json();
+      setResults(data.books);
     } catch (error) {
-        console.error(error);
+      console.error(error);
     } finally {
-        setLoading(false);
+      setLoading(false);
     }
   };
-
-  useEffect(() => {
-    if (results?.length > 0) {
-      window.sessionStorage.setItem("results", JSON.stringify(results));
-    }
-  }, [results]);
-
-  useEffect(() => {
-    const results = window.sessionStorage.getItem("results");
-    const query = window.sessionStorage.getItem("query");
-    if (results) {
-      setResults(JSON.parse(results));
-    }
-    if (query) {
-      setQuery(JSON.parse(query));
-    }
-  }, []);
 
   return (
     <>
@@ -68,55 +41,22 @@ export default function Home() {
         <p className="text-gray-600 text-sm text-center mt-1 font-light dark:text-gray-200">
           Library Genesis Simplified
         </p>
-        <form
-          className="flex flex-col items-center w-5/6"
-          onSubmit={handleBookSearch}
-        >
-          <input
-            type="text"
-            className="mt-10 w-full text-center p-2 border border-black max-w-md  dark:bg-gray-900 dark:border-gray-500"
-            placeholder="Book title"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-          />
 
-          <Button type="submit" title="Search Book" />
-        </form>
+        <SearchForm onSearch={handleBookSearch} />
 
-        <div className="flex flex-col w-full mt-4 max-w-md ">
-          <div
-            className="border border-black  w-full px-6 py-2 text-xs flex justify-between dark:border-gray-500"
-            onClick={() => setShowOptions(!showOptions)}
-          >
-            <span>Options</span>
-            <span>&#x25BC;</span>
-          </div>
-          <div
-            className={`px-6  pb-4 pt-3 bg-white dark:bg-gray-800 transition-all ease-in duration-200	border border-black  ${
-              showOptions ? "block" : "hidden"
-            }`}
-          >
-            <Checkbox
-              label="Kindle only (Kindle supported formats)"
-              checked={showKindleResults}
-              onChange={() => setShowKindleResults(!showKindleResults)}
-            />
-            {showKindleResults && (
-              <EmailInput
-                email={email}
-                onEmailChange={(e) => setEmail(e.target.value)}
-              />
-            )}
-
-          </div>
-        </div>
+        <Options
+          showKindleResults={showKindleResults}
+          setShowKindleResults={setShowKindleResults}
+          email={email}
+          setEmail={setEmail}
+        />
 
         {loading && <Loader tailwindcss="h-8 w-8" loadingText="Searching..." />}
       </div>
 
       <ResultCardList
+        setResults={setResults}
         results={results}
-        enableReadingMode={enableReadingMode}
         showKindleOnlyResults={showKindleResults}
         email={email}
       />

@@ -1,9 +1,9 @@
 import { useState } from "react";
 import Button from "./button";
 
-import Link from "next/link";
-import { ReadSVG, EmailSVG } from "./svgs";
 import Loader from "./loader";
+import { EmailSVG } from "./svgs";
+import Image from "next/image";
 
 type ResultCardProps = {
   title: string;
@@ -13,7 +13,6 @@ type ResultCardProps = {
   filesize: string;
   bookImage: string;
   download: string;
-  enableReadingMode: boolean;
   showKindleOnlyResults: boolean;
   email: string;
 };
@@ -26,7 +25,6 @@ export default function ResultCard({
   filesize,
   bookImage,
   download,
-  enableReadingMode,
   showKindleOnlyResults,
   email,
 }: ResultCardProps) {
@@ -96,8 +94,6 @@ export default function ResultCard({
     // setMailStatus({ sending: false });
   };
 
-  console.log("download", download);
-
   const handleOnError = () => {
     setSrc("/placeholder-book.jpg");
   };
@@ -105,30 +101,37 @@ export default function ResultCard({
   return (
     <div className="mb-4 w-full max-w-lg max-h-64 overflow-hidden shadow-lg flex border border-black dark:border-gray-500">
       <div className="w-1/3">
-        <img
+        <Image
           className="object-cover w-full h-full"
           src={src}
           alt={title}
           onError={handleOnError}
           referrerPolicy="no-referrer"
+          width={200}
+          height={300}
         />
       </div>
+
       <div className="flex-1 px-6 py-4 ">
         <h4 className="mb-2 text-sm font-regular tracking-tight leading-tight text-gray-800 title dark:text-gray-100">
           {title}
         </h4>
+
         <p className="text-xs font-light text-gray-600 overflow-ellipsis line-clamp-2">
           {author}
         </p>
-        <p className="text-xs font-light text-gray-600">{extension}</p>
+        
+        <p className="text-xs font-light text-gray-600">.{extension}</p>
         <p className="text-xs font-light text-gray-600">{language}</p>
-        <p className="text-xs font-light text-gray-600">{filesize}</p>
+        <p className="text-xs font-light text-gray-600">
+          {getReadableFileSize(parseInt(filesize))}
+        </p>
 
         <div className="flex items-center">
           <a href={`/api/dl/${btoa(download)}.epub`}>
             <Button title="Download" small />
           </a>
-      
+
           {showKindleOnlyResults && (
             <div
               onClick={handleEmailSend}
@@ -148,3 +151,12 @@ export default function ResultCard({
     </div>
   );
 }
+
+const getReadableFileSize = (bytes: number) => {
+  const i = Math.floor(Math.log(bytes) / Math.log(1024));
+  return (
+    (bytes / Math.pow(1024, i)).toFixed(2) +
+    " " +
+    ["B", "kB", "MB", "GB", "TB"][i]
+  );
+};
