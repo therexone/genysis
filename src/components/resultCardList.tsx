@@ -1,12 +1,19 @@
 import React from "react";
 import ResultCard from "./result-card";
 
+interface ResultCardListProps {
+  results: any[];
+  enableReadingMode: boolean;
+  showKindleOnlyResults: boolean;
+  email: string;
+}
+
 const ResultCardList = ({
   results,
   enableReadingMode,
   showKindleOnlyResults,
   email,
-}) => {
+}: ResultCardListProps) => {
   const finalResults = showKindleOnlyResults
     ? results?.filter(
         (result) => result.extension === "mobi" || result.extension === "epub"

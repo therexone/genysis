@@ -1,11 +1,22 @@
 import { useState } from "react";
-import { toast } from "tailwind-toast";
-import { validateEmail } from "../util/validateEmail";
 import Button from "./button";
 
 import Link from "next/link";
 import { ReadSVG, EmailSVG } from "./svgs";
 import Loader from "./loader";
+
+type ResultCardProps = {
+  title: string;
+  author: string;
+  extension: string;
+  language: string;
+  filesize: string;
+  bookImage: string;
+  download: string;
+  enableReadingMode: boolean;
+  showKindleOnlyResults: boolean;
+  email: string;
+};
 
 export default function ResultCard({
   title,
@@ -18,7 +29,7 @@ export default function ResultCard({
   enableReadingMode,
   showKindleOnlyResults,
   email,
-}) {
+}: ResultCardProps) {
   const [src, setSrc] = useState(bookImage);
 
   const [mailStatus, setMailStatus] = useState({
@@ -26,29 +37,29 @@ export default function ResultCard({
   });
 
   const handleEmailSend = async () => {
-    if (!validateEmail(email)) {
-      toast()
-        .default("⚠ Error", "Please check the email address")
-        .with({
-          shape: "sqaure",
-          positionY: "bottom",
-          color: "white",
-          fontColor: "black",
-        })
-        .show();
-      return;
-    }
+    // if (!validateEmail(email)) {
+    //   toast()
+    //     .default("⚠ Error", "Please check the email address")
+    //     .with({
+    //       shape: "sqaure",
+    //       positionY: "bottom",
+    //       color: "white",
+    //       fontColor: "black",
+    //     })
+    //     .show();
+    //   return;
+    // }
     setMailStatus({ sending: true });
-    toast()
-      .default("Sending e-book to", email)
-      .with({
-        shape: "sqaure",
-        positionY: "bottom",
-        color: "white",
-        fontColor: "black",
-      })
-      .for(1000)
-      .show();
+    // toast()
+    //   .default("Sending e-book to", email)
+    //   .with({
+    //     shape: "sqaure",
+    //     positionY: "bottom",
+    //     color: "white",
+    //     fontColor: "black",
+    //   })
+    //   .for(1000)
+    //   .show();
 
     const response = await fetch(
       `/api/send-mail/${btoa(download)}.epub?mail=${email}`
@@ -60,30 +71,32 @@ export default function ResultCard({
     // }, 2000);
 
     if (!response.ok) {
-      toast()
-        .default(response.status, "Failed to send mail")
-        .with({
-          shape: "sqaure",
-          positionY: "bottom",
-          color: "white",
-          fontColor: "black",
-        })
-        .show();
-      setMailStatus({ sending: false });
-      return;
+      // toast()
+      //   .default(response.status, "Failed to send mail")
+      //   .with({
+      //     shape: "sqaure",
+      //     positionY: "bottom",
+      //     color: "white",
+      //     fontColor: "black",
+      //   })
+      //   .show();
+      // setMailStatus({ sending: false });
+      // return;
     }
 
-    toast()
-      .default(response.statusText, "Mail sent")
-      .with({
-        shape: "sqaure",
-        positionY: "bottom",
-        color: "white",
-        fontColor: "black",
-      })
-      .show();
-    setMailStatus({ sending: false });
+    // toast()
+    //   .default(response.statusText, "Mail sent")
+    //   .with({
+    //     shape: "sqaure",
+    //     positionY: "bottom",
+    //     color: "white",
+    //     fontColor: "black",
+    //   })
+    //   .show();
+    // setMailStatus({ sending: false });
   };
+
+  console.log("download", download);
 
   const handleOnError = () => {
     setSrc("/placeholder-book.jpg");
@@ -115,18 +128,7 @@ export default function ResultCard({
           <a href={`/api/dl/${btoa(download)}.epub`}>
             <Button title="Download" small />
           </a>
-          {enableReadingMode && extension == "epub" && (
-            <Link
-              href={{
-                pathname: `reader/${btoa(download)}.epub`,
-                query: { title },
-              }}
-            >
-              <a className="text-xs ml-3 mt-4">
-                <ReadSVG className="w-8 h-8 border border-black p-1.5" />
-              </a>
-            </Link>
-          )}
+      
           {showKindleOnlyResults && (
             <div
               onClick={handleEmailSend}
@@ -134,7 +136,7 @@ export default function ResultCard({
             >
               {mailStatus.sending ? (
                 <span className="w-6 h-6">
-                  <Loader tailwindcss="w-6 h-6" />
+                  <Loader tailwindcss="w-6 h-6" loadingText="" />
                 </span>
               ) : (
                 <EmailSVG className="w-8 h-8 border border-black p-1.5 " />

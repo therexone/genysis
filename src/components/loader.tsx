@@ -1,4 +1,11 @@
-const Loader = ({ loadingText, tailwindcss }) => {
+
+const Loader = ({
+  loadingText,
+  tailwindcss,
+}: {
+  loadingText: string;
+  tailwindcss: string;
+}) => {
   return (
     <div>
       <div className={`spinner ${tailwindcss}`}></div>

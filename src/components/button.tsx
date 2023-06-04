@@ -1,4 +1,14 @@
-export default function Button({ title, small = false, onClick, type }) {
+export default function Button({
+  title,
+  small = false,
+  onClick,
+  type = "button",
+}: {
+  title: string;
+  small?: boolean;
+  onClick?: () => void;
+  type?: "button" | "submit" | "reset";
+}) {
   return (
     <button
       type={type}

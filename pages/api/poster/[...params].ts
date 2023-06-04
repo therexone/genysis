@@ -1,7 +1,12 @@
-export default async function handler(req, res) {
+import { NextApiRequest, NextApiResponse } from "next";
+
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   const posterUrl = "http://library.lol/covers/";
   try {
-    const [id, md5WithExtension] = req.query.params;
+    const [id, md5WithExtension] = req.query.params as string[];
     const resp = await fetch(`${posterUrl}${id}/${md5WithExtension}`);
     if (!resp.ok) {
       return res.status(404).send("Not found");

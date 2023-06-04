@@ -1,15 +1,13 @@
 @tailwind base;
 
-/* Write your own custom base styles here */
-
-/* Start purging... */
 @tailwind components;
-/* Stop purging. */
+
+@tailwind utilities;
+
 
 html,
 body {
   font-family: "DM Mono", monospace;
-
   @apply bg-gray-50 dark:bg-gray-900;
 }
 
@@ -25,9 +23,7 @@ button:focus {
   overflow: hidden;
 }
 
-/* Start purging... */
-@tailwind utilities;
-/* Stop purging. */
+
 .home {
   height: 100vh;
   justify-content: center;
@@ -70,23 +66,6 @@ button:focus {
 }
 
 input:checked + div svg {
-  @apply block;
+  display: block;
 }
 
-.twthis {
-  border: 1px solid black;
-  padding: 1.6rem;
-  border-radius: 0;
-  background-color: white;
-  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
-}
-
-div[id^="tawilwind-toast-"] {
-  /* z-50 fixed ease-in-out transform duration-500 -bottom-24 flex justify-center w-full -translate-y-36 */
-  position: fixed;
-  display: flex;
-  justify-content: center;
-  transition: all 500 ease-in-out;
-  transform: translateY(-36px);
-  bottom: -10px;
-}

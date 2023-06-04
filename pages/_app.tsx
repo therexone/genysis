@@ -1,7 +1,8 @@
-import "../styles/index.css";
+import "../styles/globals.css";
+import { AppProps } from "next/app";
 import Head from "next/head";
 
-function MyApp({ Component, pageProps }) {
+function MyApp({ Component, pageProps }: AppProps) {
   return (
     <>
       <Head>
@@ -18,6 +19,8 @@ function MyApp({ Component, pageProps }) {
         <link rel="manifest" href="/manifest.json" />
 
         <meta name="theme-color" content="#FFFFFF" />
+
+        
       </Head>
       <Component {...pageProps} />
     </>

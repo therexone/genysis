@@ -1,18 +1,15 @@
+/** @type {import('tailwindcss').Config} */
 module.exports = {
-  purge: [
-    "./src/components/**/*.{js,ts,jsx,tsx}",
-    "./pages/**/*.{js,ts,jsx,tsx}",
+  content: [
+    "./pages/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
   ],
-  darkMode: "media", // 'media' or 'class'
   theme: {
     extend: {
       colors: {
         "accent-1": "#333",
       },
     },
-  },
-  variants: {
-    extend: {},
   },
   plugins: [],
 };

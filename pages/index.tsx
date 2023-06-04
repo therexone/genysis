@@ -1,11 +1,10 @@
-import Head from "next/head";
-import Button from "../src/components/button";
-import { useState, useEffect } from "react";
-import Checkbox from "../src/components/checkbox";
-import EmailInput from "../src/components/emailInput";
-import ResultCardList from "../src/components/resultCardList";
-import Loader from "../src/components/loader";
-import useLocalStorageState from "../src/hooks/useLocalStorageState";
+import Button from "@/src/components/button";
+import Checkbox from "@/src/components/checkbox";
+import EmailInput from "@/src/components/emailInput";
+import Loader from "@/src/components/loader";
+import ResultCardList from "@/src/components/resultCardList";
+import useLocalStorageState from "@/src/hooks/useLocalStorageState";
+import { useState, useEffect, FormEvent } from "react";
 
 export default function Home() {
   const [query, setQuery] = useState("");
@@ -24,15 +23,21 @@ export default function Home() {
 
   const [email, setEmail] = useLocalStorageState("email", "");
 
-  const handleBookSearch = async (e) => {
+  const handleBookSearch = async (e: FormEvent<HTMLFormElement>) => {
     setLoading(true);
     setResults([]);
     e.preventDefault();
-    window.sessionStorage.setItem("query", JSON.stringify(query));
-    const res = await fetch(`/api/search/${query}`);
-    const data = await res.json();
-    setResults(data.books);
-    setLoading(false);
+    try {
+        window.sessionStorage.setItem("query", JSON.stringify(query));
+        const res = await fetch(`/api/search/${query}`);
+        const data = await res.json();
+        console.log(data);
+        setResults(data.books);
+    } catch (error) {
+        console.error(error);
+    } finally {
+        setLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -54,13 +59,6 @@ export default function Home() {
 
   return (
     <>
-      <Head>
-        <link rel="preconnect" href="https://fonts.gstatic.com" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&display=swap"
-          rel="stylesheet"
-        />
-      </Head>
       <div
         className={`pt-10 mb-8 px-10 flex flex-col items-center dark:text-gray-50 ${
           results?.length === 0 && "home"
@@ -120,6 +118,7 @@ export default function Home() {
 
         {loading && <Loader tailwindcss="h-8 w-8" loadingText="Searching..." />}
       </div>
+
       <ResultCardList
         results={results}
         enableReadingMode={enableReadingMode}

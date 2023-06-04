@@ -1,4 +1,6 @@
-export const EmailSVG = ({ className }) => (
+export const EmailSVG = ({ className }: {
+  className: string;
+}) => (
   <svg
     id="Capa_1"
     viewBox="0 0 465.882 465.882"
@@ -9,7 +11,9 @@ export const EmailSVG = ({ className }) => (
   </svg>
 );
 
-export const ReadSVG = ({ className }) => (
+export const ReadSVG = ({ className }: {
+  className: string;
+}) => (
   <svg
     version="1.1"
     id="Capa_1"

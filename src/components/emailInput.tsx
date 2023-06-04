@@ -1,7 +1,12 @@
-import { validateEmail } from "../util/validateEmail";
 import { useMemo } from "react";
+import { validateEmail } from "../utils/validateEmail";
 
-const EmailInput = ({ email, onEmailChange }) => {
+type EmailInputProps = {
+  email: string;
+  onEmailChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+};
+
+const EmailInput = ({ email, onEmailChange }: EmailInputProps) => {
   const isEmailValid = useMemo(() => validateEmail(email), [email]);
   return (
     <>
