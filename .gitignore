@@ -39,3 +39,14 @@ workbox-*.js
 workbox-*.js.map
 sw.js
 sw.js.map
+
+background-worker/node_modules
+
+node_modules/
+redis-data/
+.env
+.DS_Store
+package-lock.json
+npm-debug.log
+yarn-debug.log
+yarn-error.log

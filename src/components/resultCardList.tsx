@@ -24,7 +24,7 @@ const ResultCardList = ({
     if (results?.length > 0) {
       window.sessionStorage.setItem("results", JSON.stringify(results));
     }
-  }, [results.length]);
+  }, [results?.length]);
 
   useEffect(() => {
     const storedResults = window.sessionStorage.getItem("results");
