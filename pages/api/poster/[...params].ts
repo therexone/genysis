@@ -7,15 +7,19 @@ export default async function handler(
   const posterUrl = "http://library.lol/covers/";
   try {
     const [id, md5WithExtension] = req.query.params as string[];
+
     const resp = await fetch(`${posterUrl}${id}/${md5WithExtension}`);
+
     if (!resp.ok) {
       return res.status(404).send("Not found");
     }
 
     const blob = await resp.blob();
-    res.type = "image/jpeg";
+
+    res.setHeader("Content-Type", blob.type || "image/png");
 
     const buffer = await blob.arrayBuffer();
+
     return res.send(Buffer.from(buffer));
   } catch (error) {
     console.error(error);
