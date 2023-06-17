@@ -128,7 +128,7 @@ export default function ResultCard({
         </p>
 
         <div className="flex items-center">
-          <a href={`/api/dl/${btoa(download)}.epub`}>
+          <a href={`/api/dl/${btoa(download)}`}>
             <Button title="Download" small />
           </a>
 

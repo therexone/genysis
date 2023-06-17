@@ -5,7 +5,7 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const base64Url = (req.query.url as string).slice(0, -5);
+  const base64Url = (req.query.url as string);
   const url = Buffer.from(base64Url, "base64").toString("utf-8");
 
   console.log(url);
@@ -16,14 +16,14 @@ export default async function handler(
 
     res.setHeader(
       "Content-disposition",
-      "attachment; filename=" + url.split("/").pop() + '"'
+      "attachment; filename=" + url.split("/").pop()
     );
 
     res.writeHead(200, {
       "Content-Type": "application/octet-stream",
     });
 
-    // @ts-expect-error 
+    // @ts-expect-error
     const downloadStream = Readable.fromWeb(readableStream);
 
     await new Promise(function (resolve) {
