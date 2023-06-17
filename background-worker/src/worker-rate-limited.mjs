@@ -2,7 +2,6 @@
 import * as dotenv from 'dotenv';
 import { Worker } from 'bullmq';
 import { logger } from './logger.mjs';
-import { sleep } from './sleep.mjs';
 
 dotenv.config();
 
@@ -14,7 +13,6 @@ const processingFunc = async (job) => {
   logger.info(initialMessage);
   await job.log(initialMessage);
 
-  await sleep(1500);
 
   let response;
   try {

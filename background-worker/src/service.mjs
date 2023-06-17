@@ -54,7 +54,7 @@ createBullBoard({
 
 // Adding a POST endpoint to make a place a dummy job into the Bull queue.
 // The job has exponential backoff should it fail, and can be retried twenty times.
-app.post('/standard-queue/job', async (_request, response) => {
+app.post('/sq/job', async (_request, response) => {
   
   const job = await standardQueue.add(
    // 'example job name',
@@ -64,7 +64,7 @@ app.post('/standard-queue/job', async (_request, response) => {
 });
 
 // Adding a GET endpoint to look up information on a particular job by ID.
-app.get('/standard-queue/job/:id', async (request, response) => {
+app.get('/sq/job/:id', async (request, response) => {
   const job = await standardQueue.getJob(request.params.id);
 
   if (job === null) {
@@ -75,8 +75,10 @@ app.get('/standard-queue/job/:id', async (request, response) => {
 });
 
 
+
+
 // Adding a GET endpoint to look up information on a particular job by ID.
-app.get('/rate-limited-queue/job/:id', async (request, response) => {
+app.get('/rlq/job/:id', async (request, response) => {
   const job = await rateLimitedQueue.getJob(request.params.id);
 
   if (job === null) {
@@ -89,6 +91,15 @@ app.get('/rate-limited-queue/job/:id', async (request, response) => {
 // Adding rate limited for subsequent routes.
 app.use(RateLimitMiddleware);
 
+
+app.post('/rlq/job', async (_request, response) => {
+  
+  const job = await rateLimitedQueue.add(
+   // 'example job name',
+  );
+
+  response.status(200).json({ job });
+});
 
 
 // Making the Express application listen for connections.
