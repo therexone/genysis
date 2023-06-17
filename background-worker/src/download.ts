@@ -1,19 +1,18 @@
-// download.js
 import fs from "fs";
-import https from "https";
 import http from "http";
+import https from "https";
 import { basename } from "path";
 import { URL } from "url";
 
-const TIMEOUT = 10000;
+const TIMEOUT = 50000;
 
-function download(url, dest) {
-  let finalDest = dest;
+function download(url: string): Promise<string> {
   const uri = new URL(url);
 
-  if (!dest) {
-    finalDest = decodeURI(basename(uri.pathname));
-  }
+  const finalDest = "download/" + decodeURI(basename(uri.pathname));
+  // Create the directory if it doesn't exist
+  fs.mkdirSync("download", { recursive: true });
+
   const pkg = url.toLowerCase().startsWith("https:") ? https : http;
 
   return new Promise((resolve, reject) => {
@@ -23,8 +22,8 @@ function download(url, dest) {
         res
           .on("end", () => {
             file.end();
-            console.log(`${uri.pathname} downloaded to: ${finalDest}`)
-            resolve();
+            console.log(`${uri.pathname} downloaded to: ${finalDest}`);
+            resolve(finalDest);
           })
           .on("error", (err) => {
             file.destroy();
@@ -33,7 +32,7 @@ function download(url, dest) {
           .pipe(file);
       } else if (res.statusCode === 302 || res.statusCode === 301) {
         // Recursively follow redirects, only a 200 will resolve.
-        download(res.headers.location, finalDest).then(() => resolve());
+        download(res.headers.location ?? "").then((path) => resolve(path));
       } else {
         reject(
           new Error(
@@ -50,5 +49,3 @@ function download(url, dest) {
 }
 
 export default download;
-
-

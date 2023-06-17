@@ -8,3 +8,4 @@
 !.prettierrc.json
 !package.json
 !yarn.lock
+!tsconfig.json

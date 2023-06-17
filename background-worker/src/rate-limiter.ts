@@ -1,9 +1,11 @@
+import { RequestHandler } from "express";
+
 const MAX_REQUESTS = 5;
 const TIME_FRAME_IN_MS = 30000;
 
-const requestCounts = new Map();
+const requestCounts: Map<string, number[]> = new Map();
 
-export const RateLimitMiddleware = (req, res, next) => {
+export const RateLimitMiddleware: RequestHandler = (req, res, next) => {
   const { ip } = req;
   const now = Date.now();
 
