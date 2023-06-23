@@ -9,7 +9,7 @@ export const RateLimitMiddleware: RequestHandler = (req, res, next) => {
   const { ip } = req;
   const now = Date.now();
 
-  const requestTimesWithinTimeFrame = (requestCounts.get(ip) ?? []).filter(
+  const requestTimesWithinTimeFrame: number[] = (requestCounts.get(ip) ?? []).filter(
     (requestTime) => requestTime > now - TIME_FRAME_IN_MS
   );
 

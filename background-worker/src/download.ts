@@ -3,15 +3,22 @@ import http from "http";
 import https from "https";
 import { basename } from "path";
 import { URL } from "url";
+import { log } from "winston";
 
 const TIMEOUT = 50000;
 
-function download(url: string): Promise<string> {
+async function download(url: string): Promise<string> {
   const uri = new URL(url);
 
   const finalDest = "download/" + decodeURI(basename(uri.pathname));
   // Create the directory if it doesn't exist
   fs.mkdirSync("download", { recursive: true });
+
+  if (fs.existsSync(finalDest)) {
+    log("info", `File already exists: ${finalDest}`);
+    console.log(`File already exists: ${finalDest}`);
+    return Promise.resolve(finalDest);
+  }
 
   const pkg = url.toLowerCase().startsWith("https:") ? https : http;
 
@@ -19,6 +26,7 @@ function download(url: string): Promise<string> {
     const request = pkg.get(uri.href).on("response", (res) => {
       if (res.statusCode === 200) {
         const file = fs.createWriteStream(finalDest, { flags: "wx" });
+
         res
           .on("end", () => {
             file.end();
@@ -41,6 +49,7 @@ function download(url: string): Promise<string> {
         );
       }
     });
+
     request.setTimeout(TIMEOUT, () => {
       request.destroy();
       reject(new Error(`Request timeout after ${TIMEOUT / 1000.0}s`));
