@@ -7,14 +7,19 @@ RUN apk add --no-cache openssl \
     && tar -C /usr/local/bin -xzvf dockerize-alpine-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
     && rm dockerize-alpine-linux-amd64-$DOCKERIZE_VERSION.tar.gz
 
+RUN mkdir -p /home/node/app && chown -R node:node /home/node/app
+
 USER node
 
-WORKDIR /home/node
+WORKDIR /home/node/app
 
 COPY package.json yarn.lock ./
 
 RUN yarn install --frozen-lockfile && yarn cache clean
 
-COPY . ./
+COPY --chown=node:node . ./
+
+# Create the dist/ directory and change its ownership to the node user.
+RUN mkdir -p ./dist && chown -R node:node ./dist
 
 CMD yarn start:service
