@@ -44,13 +44,12 @@ export const sendEmail = async (filePath: string, recipientEmail: string) => {
     });
 
     console.log("Email sent successfully");
-    return true;
   } catch (error: any) {
     log("error", "Failed to send email", {
       statusCode: error.statusCode,
       message: error.message,
     });
     console.error("Failed to send email", error.statusCode, error.message);
-    return false;
+    throw error;
   }
 };

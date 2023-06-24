@@ -37,6 +37,12 @@ export default function ResultCard({
   });
 
   const handleEmailSend = async () => {
+    // if file is larger than 15 MB, don't send mail
+    if (parseInt(filesize) > 15 * 1024 * 1024) {
+      toast.error("Can't send files larger than 15 MB.");
+      return;
+    }
+
     if (!validateEmail(email)) {
       toast.error("Invalid email");
       return;
