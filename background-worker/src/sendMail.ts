@@ -17,7 +17,7 @@ export const sendEmail = async (filePath: string, recipientEmail: string) => {
       process.env.MJ_SECRET_KEY as string
     );
 
-    const result = await client.post("send", { version: "v3.1" }).request({
+     await client.post("send", { version: "v3.1" }).request({
       Messages: [
         {
           From: {
@@ -43,7 +43,7 @@ export const sendEmail = async (filePath: string, recipientEmail: string) => {
       ],
     });
 
-    console.log("Email sent successfully", result.body);
+    console.log("Email sent successfully");
     return true;
   } catch (error: any) {
     log("error", "Failed to send email", {

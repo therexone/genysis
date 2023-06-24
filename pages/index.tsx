@@ -51,7 +51,7 @@ export default function Home() {
           setEmail={setEmail}
         />
 
-        {loading && <Loader tailwindcss="h-8 w-8" loadingText="Searching..." />}
+        {loading && <Loader tailwindcss="h-8 w-8 mt-4" loadingText="Searching..." />}
       </div>
 
       <ResultCardList

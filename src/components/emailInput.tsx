@@ -12,11 +12,13 @@ const EmailInput = ({ email, onEmailChange }: EmailInputProps) => {
     <>
       <input
         type="email"
-        className={`mt-2 w-full p-1 border ${
+        className={`mt-2 w-full p-2 border ${
           isEmailValid
-            ? "border-black dark:text-gray-600"
-            : "border-red-800 text-red-700"
-        } max-w-md text-sm`}
+            ? "border-black dark:text-zinc-300 dark:border-zinc-500"
+            : "border-rose-800 text-red-700 dark:text-rose-500"
+        } max-w-md text-sm
+          focus:border-black  dark:focus:border-zinc-400 
+        `}
         placeholder="Enter kindle email"
         value={email}
         onChange={onEmailChange}

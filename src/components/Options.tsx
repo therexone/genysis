@@ -22,7 +22,7 @@ export function Options({
   return (
     <div className="flex flex-col w-full mt-4 max-w-md">
       <div
-        className="border border-black w-full px-6 py-2 text-xs flex justify-between dark:border-gray-500"
+        className="border border-black w-full px-6 py-2 text-xs flex justify-between dark:border-zinc-500"
         onClick={() => setIsOpen(!isOpen)}
       >
         <span>Options</span>
@@ -36,12 +36,12 @@ export function Options({
       </div>
 
       <div
-        className={`px-6 pb-4 pt-3 bg-white dark:bg-gray-800 transition-all ease-in duration-200	border border-black ${
+        className={`px-6 pb-4 pt-3 bg-white dark:bg-zinc-800 transition-all ease-in duration-200	border border-black ${
           isOpen ? "block" : "hidden"
         }`}
       >
         <Checkbox
-          label="Kindle only (Kindle supported formats)"
+          label="Kindle only (.epub)"
           checked={showKindleResults}
           onChange={handleKindleChange}
         />
