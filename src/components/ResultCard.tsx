@@ -1,9 +1,11 @@
 import { useState } from "react";
 import Button from "./button";
+import toast, { Toaster } from "react-hot-toast";
 
 import Loader from "./loader";
 import { EmailSVG } from "./svgs";
 import Image from "next/image";
+import { validateEmail } from "../utils/validateEmail";
 
 type ResultCardProps = {
   title: string;
@@ -35,63 +37,38 @@ export default function ResultCard({
   });
 
   const handleEmailSend = async () => {
-    // if (!validateEmail(email)) {
-    //   toast()
-    //     .default("⚠ Error", "Please check the email address")
-    //     .with({
-    //       shape: "sqaure",
-    //       positionY: "bottom",
-    //       color: "white",
-    //       fontColor: "black",
-    //     })
-    //     .show();
-    //   return;
-    // }
+    if (!validateEmail(email)) {
+      toast.error("Invalid email");
+      return;
+    }
     setMailStatus({ sending: true });
-    // toast()
-    //   .default("Sending e-book to", email)
-    //   .with({
-    //     shape: "sqaure",
-    //     positionY: "bottom",
-    //     color: "white",
-    //     fontColor: "black",
-    //   })
-    //   .for(1000)
-    //   .show();
 
-    const response = await fetch(
-      `/api/send-mail/${btoa(download)}.epub?mail=${email}`
-    );
-    // let response;
+    toast.dismiss("Sending mail...");
 
-    // setTimeout(() => {
-    //   response.ok = true;
-    // }, 2000);
+    const response = await fetch("/api/sendtomail", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email, downloadURL: download }),
+    });
 
-    if (!response.ok) {
-      // toast()
-      //   .default(response.status, "Failed to send mail")
-      //   .with({
-      //     shape: "sqaure",
-      //     positionY: "bottom",
-      //     color: "white",
-      //     fontColor: "black",
-      //   })
-      //   .show();
-      // setMailStatus({ sending: false });
-      // return;
+    if (response.status === 429) {
+      toast.error("Too many requests. Try again later.");
+      setMailStatus({ sending: false });
+      return;
     }
 
-    // toast()
-    //   .default(response.statusText, "Mail sent")
-    //   .with({
-    //     shape: "sqaure",
-    //     positionY: "bottom",
-    //     color: "white",
-    //     fontColor: "black",
-    //   })
-    //   .show();
-    // setMailStatus({ sending: false });
+    if (!response.ok) {
+      toast.error("Something went wrong.");
+      setMailStatus({ sending: false });
+      return;
+    }
+
+    toast.success("Added to queue.", {
+      icon: "✅",
+    });
+    setMailStatus({ sending: false });
   };
 
   const handleOnError = () => {
@@ -99,7 +76,7 @@ export default function ResultCard({
   };
 
   return (
-    <div className="mb-4 w-full max-w-lg max-h-64 overflow-hidden shadow-lg flex border border-black dark:border-gray-500">
+    <div className="mb-4 w-full max-w-lg max-h-64 overflow-hidden shadow-lg flex border border-black dark:border-zinc-400">
       <div className="w-1/3">
         <Image
           className="object-cover w-full h-full"
@@ -113,17 +90,21 @@ export default function ResultCard({
       </div>
 
       <div className="flex-1 px-6 py-4 ">
-        <h4 className="mb-2 text-sm font-regular tracking-tight leading-tight text-gray-800 title dark:text-gray-100">
+        <h4 className="mb-2 text-sm font-regular tracking-tight leading-tight text-gray-800 title dark:text-zinc-100">
           {title}
         </h4>
 
-        <p className="text-xs font-light text-gray-600 overflow-ellipsis line-clamp-2">
+        <p className="text-xs font-light text-gray-600 overflow-ellipsis line-clamp-2 dark:text-zinc-400">
           {author}
         </p>
-        
-        <p className="text-xs font-light text-gray-600">.{extension}</p>
-        <p className="text-xs font-light text-gray-600">{language}</p>
-        <p className="text-xs font-light text-gray-600">
+
+        <p className="text-xs font-light text-gray-600 dark:text-zinc-400">
+          .{extension}
+        </p>
+        <p className="text-xs font-light text-gray-600 dark:text-zinc-400">
+          {language}
+        </p>
+        <p className="text-xs font-light text-gray-600 dark:text-zinc-400">
           {getReadableFileSize(parseInt(filesize))}
         </p>
 
@@ -142,12 +123,27 @@ export default function ResultCard({
                   <Loader tailwindcss="w-6 h-6" loadingText="" />
                 </span>
               ) : (
-                <EmailSVG className="w-8 h-8 border border-black p-1.5 " />
+                <EmailSVG className="w-8 h-8 border border-black p-1.5 dark:border-zinc-400 dark:fill-zinc-400 " />
               )}
             </div>
           )}
         </div>
       </div>
+
+      <Toaster
+        toastOptions={{
+          style: {
+            borderRadius: 0,
+            border: "1px solid #e4e4e7",
+            background: "#333",
+            color: "#ffffffe4",
+          },
+          success: {
+            icon: "✅",
+          },
+          position: "bottom-center",
+        }}
+      />
     </div>
   );
 }

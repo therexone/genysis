@@ -4,11 +4,10 @@
 
 @tailwind utilities;
 
-
 html,
 body {
   font-family: "DM Mono", monospace;
-  @apply bg-gray-50 dark:bg-gray-900;
+  @apply bg-gray-50 dark:bg-zinc-950;
 }
 
 input:focus,
@@ -23,7 +22,6 @@ button:focus {
   overflow: hidden;
 }
 
-
 .home {
   height: 100vh;
   justify-content: center;
@@ -35,33 +33,37 @@ button:focus {
 /* Your own custom utilities */
 
 .spinner {
-  margin: auto;
-  background-color: #333;
+  animation: rotate4 2s linear infinite;
+ }
 
-  border-radius: 100%;
-  -webkit-animation: sk-scaleout 1s infinite ease-in-out;
-  animation: sk-scaleout 1s infinite ease-in-out;
+.spinner circle {
+  fill: none;
+  stroke-width: 3;
+  stroke-dasharray: 1, 200;
+  stroke-dashoffset: 0;
+  stroke-linecap: round;
+  animation: dash4 1.5s ease-in-out infinite;
 }
 
-@-webkit-keyframes sk-scaleout {
-  0% {
-    -webkit-transform: scale(0);
-  }
+@keyframes rotate4 {
   100% {
-    -webkit-transform: scale(1);
-    opacity: 0;
+    transform: rotate(360deg);
   }
 }
 
-@keyframes sk-scaleout {
+@keyframes dash4 {
   0% {
-    -webkit-transform: scale(0);
-    transform: scale(0);
+    stroke-dasharray: 1, 200;
+    stroke-dashoffset: 0;
   }
+
+  50% {
+    stroke-dasharray: 90, 200;
+    stroke-dashoffset: -35px;
+  }
+
   100% {
-    -webkit-transform: scale(1);
-    transform: scale(1);
-    opacity: 0;
+    stroke-dashoffset: -125px;
   }
 }
 
@@ -69,3 +71,7 @@ input:checked + div svg {
   display: block;
 }
 
+input {
+  @apply dark:text-zinc-100;
+  @apply dark:bg-zinc-800;
+}

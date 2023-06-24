@@ -27,7 +27,7 @@ export function SearchForm({
     >
       <input
         type="text"
-        className="mt-10 w-full text-center p-2 border border-black max-w-md dark:bg-gray-900 dark:border-gray-500"
+        className="mt-10 w-full text-center p-2 border border-black max-w-md dark:border-zinc-600"
         placeholder="Book title"
         value={query}
         onChange={(e) => setQuery(e.target.value)}
